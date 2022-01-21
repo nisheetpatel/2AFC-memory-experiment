@@ -84,19 +84,23 @@ stims = [s_hexagon, s_triangle, s_rectangle,
 respClock = core.Clock()
 
 # Example of conditions to be sent to TrialHandlerExt
-trialList = [
-    {"Name":0, "sA":0, "sB":1, "weight":2},
-    {"Name":1, "sA":0, "sB":2, "weight":2},
-    {"Name":2, "sA":3, "sB":4, "weight":2},
-    {"Name":3, "sA":3, "sB":5, "weight":2},
-    {"Name":4, "sA":6, "sB":7, "weight":1},
-    {"Name":5, "sA":6, "sB":8, "weight":1},
-    {"Name":6, "sA":9, "sB":10, "weight":1},
-    {"Name":7, "sA":9, "sB":11, "weight":1}
+conditions = [
+    {"Name":0, "sA":1, "sB":2, "weight":4},
+    {"Name":1, "sA":0, "sB":2, "weight":4},
+    {"Name":2, "sA":0, "sB":1, "weight":4},
+    {"Name":3, "sA":4, "sB":5, "weight":4},
+    {"Name":4, "sA":3, "sB":5, "weight":4},
+    {"Name":5, "sA":3, "sB":4, "weight":4},
+    {"Name":6, "sA":7, "sB":8, "weight":1},
+    {"Name":7, "sA":6, "sB":8, "weight":1},
+    {"Name":8, "sA":6, "sB":7, "weight":1},
+    {"Name":9, "sA":10, "sB":11, "weight":1},
+    {"Name":10, "sA":9, "sB":11, "weight":1},
+    {"Name":11, "sA":9, "sB":10, "weight":1}
 ]
 
 # Trial handler
-trials = data.TrialHandlerExt(trialList=trialList, 
+trials = data.TrialHandlerExt(trialList=conditions, 
     nReps=1, method='random')
 
 # Experiment handler
@@ -114,7 +118,6 @@ for thisTrial in trials:
     # draw fixation and reset clock
     fixation.draw()
     win.flip()
-    respClock.reset()
     core.wait(1)
 
     # assign left and right stimuli
@@ -125,6 +128,7 @@ for thisTrial in trials:
     s_left.draw()
     s_right.draw()
     win.flip()
+    respClock.reset()
 
     # wait for response
     keys = event.waitKeys(keyList = ['left', 'right', 'escape'])
