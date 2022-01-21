@@ -1,7 +1,7 @@
-import numpy
-import expt
+from expt.option import createAllOptionSets
 from pathlib import Path
 from psychopy import visual, event, core, data, gui
+import random
 
 info = {}
 
@@ -25,60 +25,11 @@ win = visual.Window([1024,768], fullscr=False, units='pix')
 fixation = visual.ShapeStim(win=win, size=10, 
     vertices='cross', lineColor='white', fillColor='white')
 
-# # create probe stimuli
-# s_left = visual.Circle(win=win, size=100, pos=[200,0],
-#     lineColor='green', fillColor='green', colorSpace='rgb')
-# s_right = visual.Pie(win=win, size=100, pos=[-200,0],
-#     start=60, end=-240, lineColor='red', fillColor='red',
-#     colorSpace='rgb')
-
 # creating probe stimuli
-# reds
-s_hexagon = visual.Polygon(win, edges=6, size=100, pos=[200,0],
-    lineColor='red', fillColor='red', colorSpace='rgb')
-
-s_triangle = visual.Polygon(win, edges=3, size=100, pos=[-200,0],
-    lineColor='red', fillColor='red', colorSpace='rgb')
-
-s_rectangle = visual.Polygon(win, edges=4, size=[100,50], pos=[-200,0],
-    lineColor='red', fillColor='red', colorSpace='rgb')
-
-# blues
-s_diamond = visual.Polygon(win, edges=4, size=100, pos=[200,0],
-    ori=45, lineColor='blue', fillColor='blue', colorSpace='rgb')
-
-s_oval = visual.Circle(win=win, radius=[50,25], pos=[-200,0],
-    ori=45, lineColor='blue', fillColor='blue')
-
-s_star = visual.ShapeStim(win=win, pos=[-200,0], vertices='star7',
-    size=100, lineColor='blue', fillColor='blue')
-
-# greens
-s_cross = visual.ShapeStim(win, pos=[200,0], vertices='cross',
-    size=100, ori=45, lineColor='green', fillColor='green')
-
-s_pentagon = visual.Polygon(win, edges=5, size=100, pos=[-200,0],
-    lineColor='green', fillColor='green', colorSpace='rgb')
-
-s_circle = visual.Circle(win=win, size=100, pos=[-200,0],
-    lineColor='green', fillColor='green', colorSpace='rgb')
-
-# yellows
-s_octagon = visual.Polygon(win, edges=8, size=100, pos=[200,0],
-    lineColor='yellow', fillColor='yellow', colorSpace='rgb')
-
-s_plus = visual.ShapeStim(win, pos=[-200,0], vertices='cross',
-    size=100, lineColor='yellow', fillColor='yellow')
-
-s_pacman = visual.Pie(win=win, size=100, pos=[-200,0],
-    start=60, end=-240, lineColor='yellow', fillColor='yellow',
-    colorSpace='rgb')
-
-# collecting all stimuli in a list
-stims = [s_hexagon, s_triangle, s_rectangle, 
-        s_diamond, s_oval, s_star,
-        s_cross, s_pentagon, s_circle,
-        s_octagon, s_plus, s_pacman]
+optSets = createAllOptionSets(win=win)
+allOptions = []
+for optSet in optSets:
+    allOptions.extend(optSet.options)
 
 # initialize response clock
 respClock = core.Clock()
@@ -115,14 +66,21 @@ thisExp.addLoop(trials)
 for thisTrial in trials:
     # run one trial
 
+    # assign left and right stimuli
+    choiceOpts = [thisTrial["sA"], thisTrial["sB"]]
+    random.shuffle(choiceOpts)
+
+    # set position
+    allOptions[choiceOpts[0]].setPosition(newPos=[-200,0])
+    allOptions[choiceOpts[1]].setPosition(newPos=[200,0])
+
+    s_left = allOptions[choiceOpts[0]].shape
+    s_right = allOptions[choiceOpts[1]].shape
+
     # draw fixation and reset clock
     fixation.draw()
     win.flip()
     core.wait(1)
-
-    # assign left and right stimuli
-    s_left = stims[thisTrial["sA"]]
-    s_right = stims[thisTrial["sB"]]
 
     # draw stimuli
     s_left.draw()
