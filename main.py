@@ -1,4 +1,4 @@
-from expt.option import createAllOptionSets
+from expt.onScreenObjects import createAllOptionSets, feedbackRect, feedbackText, fixCross
 from pathlib import Path
 from psychopy import visual, event, core, data, gui
 import random
@@ -11,9 +11,8 @@ dlg = gui.DlgFromDict(info) #(and from psychopy import gui at top of script)
 if not dlg.OK:
     core.quit()
 #add additional info after the dialog has gone
-info['fixTime'] = 0.5 # seconds
-info['cueTime'] = 0.2
-info['probeTime'] = 0.2
+info['fixTime'] = 1 # seconds
+info['probeTime'] = 5
 info['dateStr'] = data.getDateStr()
 
 Path("./data").mkdir(parents=True, exist_ok=True)
@@ -22,8 +21,8 @@ fileName = f"data/{info['Subject ID']}"
 win = visual.Window([1024,768], fullscr=False, units='pix')
 
 # Initialize fixation cross
-fixation = visual.ShapeStim(win=win, size=10, 
-    vertices='cross', lineColor='white', fillColor='white')
+fixation = fixCross(win=win)
+feedbackSq = feedbackRect(win=win)
 
 # creating probe stimuli
 optSets = createAllOptionSets(win=win)
@@ -71,20 +70,20 @@ for thisTrial in trials:
     random.shuffle(choiceOpts)
 
     # set position
-    allOptions[choiceOpts[0]].setPosition(newPos=[-200,0])
-    allOptions[choiceOpts[1]].setPosition(newPos=[200,0])
+    allOptions[choiceOpts[0]].setPosition(newPos='left')
+    allOptions[choiceOpts[1]].setPosition(newPos='right')
 
-    s_left = allOptions[choiceOpts[0]].shape
-    s_right = allOptions[choiceOpts[1]].shape
+    s_left = allOptions[choiceOpts[0]]
+    s_right = allOptions[choiceOpts[1]]
 
     # draw fixation and reset clock
-    fixation.draw()
+    fixation.shape.draw()
     win.flip()
     core.wait(1)
 
     # draw stimuli
-    s_left.draw()
-    s_right.draw()
+    s_left.shape.draw()
+    s_right.shape.draw()
     win.flip()
     respClock.reset()
 
@@ -98,6 +97,20 @@ for thisTrial in trials:
         corr = 1
     elif resp=='escape':
         trials.finished = True
+
+    # feedback
+    s_left.shape.draw()
+    s_right.shape.draw()
+    feedbackSq.setPosition(resp)
+    feedbackSq.shape.draw()
+    if resp == 'left':
+        r = s_left.generateReward()
+    elif resp == 'right':
+        r = s_right.generateReward()
+    feedbackTxt = feedbackText(win, rewardObtained=r)
+    feedbackTxt.setPosition(resp)
+    feedbackTxt.shape.draw()
+    win.flip()
     
     # Inter-trial interval
     core.wait(1)
