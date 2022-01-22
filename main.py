@@ -1,4 +1,4 @@
-from expt.onScreenObjects import createAllOptionSets, feedbackRect, feedbackText, fixCross
+from expt.options import createAllOptionSets, feedbackRect, feedbackText, fixCross
 from pathlib import Path
 from psychopy import visual, event, core, data, gui
 import random
