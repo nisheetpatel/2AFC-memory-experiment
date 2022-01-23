@@ -4,6 +4,15 @@ from psychopy import visual
 from expt.stimuli import Stimuli
 import numpy as np
 
+x_positions = {
+    "left": -200,
+    "right": 200
+}
+
+y_positions = {
+    "center": 0,
+    "top": 120
+}
 
 @dataclass
 class OnScreenObject(ABC):
@@ -11,17 +20,12 @@ class OnScreenObject(ABC):
 
     win: visual.Window
     shape: visual
+    position: List[int, int]
 
-    def setPosition(self, newPos):
-        # Set object position to one of left or right
-        assert newPos in ["left", "right"]
+    def _set_position(self):
+        self.shape.setPos(self.position)
 
-        if newPos == "left":
-            self.shape.setPos([-200, 0])
-        elif newPos == "right":
-            self.shape.setPos([200, 0])
-
-    def getPosition(self):
+    def _get_position(self):
         # Fetch object position
         return self.shape.pos
 
@@ -100,14 +104,14 @@ class FeedbackText(OnScreenObject):
         if pos is not None:
             self.setPosition(newPos=pos)
 
-    def setPosition(self, newPos):
-        # Set object position to one of left or right
-        assert newPos in ["left", "right"]
+    # def setPosition(self, newPos):
+    #     # Set object position to one of left or right
+    #     assert newPos in ["left", "right"]
 
-        if newPos == "left":
-            self.shape.setPos([0, 120])
-        elif newPos == "right":
-            self.shape.setPos([400, 120])
+    #     if newPos == "left":
+    #         self.shape.setPos([0, 120])
+    #     elif newPos == "right":
+    #         self.shape.setPos([400, 120])
 
 
 @dataclass
