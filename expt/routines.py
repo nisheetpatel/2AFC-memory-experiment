@@ -66,24 +66,32 @@ class TrialRoutine:
         # Show choice options
         for opt in self.choiceOptions:
             opt.shape.draw()
+
         self.win.flip()
 
         # Reset clock to zero
         self.clock.reset()
 
         # record response, response time, and correct
-        keys = event.waitKeys(maxWait=5, keyList=["left", "right", "escape"])
+        keys = event.waitKeys(keyList=["left", "right", "escape"])
         rt = self.clock.getTime()
-        resp = keys[0]
+
+        # try:
+        #     resp = keys[0]
+        # except:
+        #     resp = None
+        resp = keys[0]        
         corr, rew = self.outcome(response=resp)
 
         # show feedback with choice options
         for opt in self.choiceOptions:
             opt.shape.draw()
+
         self.feedbackRect.setPosition(newPos=resp)
         self.feedbackRect.shape.draw()
         feedbackText = FeedbackText(self.win, rew, pos=resp)
         feedbackText.shape.draw()
+        
         self.win.flip()
         core.wait(1)
 
