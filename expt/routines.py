@@ -23,8 +23,8 @@ class TrialRoutine:
         trial condition and set their positions.
         """
         # assign left and right stimuli
-        self.choiceOpt1 = self.allOptions[self.condition["sA"]]
-        self.choiceOpt2 = self.allOptions[self.condition["sB"]]
+        self.choiceOpt1 = self.allOptions[self.condition["option_a"]]
+        self.choiceOpt2 = self.allOptions[self.condition["option_b"]]
         self.choiceOptions = [self.choiceOpt1, self.choiceOpt2]
         random.shuffle(self.choiceOptions)
 
@@ -92,7 +92,3 @@ class TrialRoutine:
         core.wait(1)
 
         return rt, resp, corr, rew
-
-
-class SessionRoutine:
-    pass
