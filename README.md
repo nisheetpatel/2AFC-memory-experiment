@@ -3,20 +3,15 @@ Two alternative forced-choice (2AFC) experiment.
 
 ## Installation
 `git clone https://github.com/nisheetpatel/Expt-HumanMemory` # clone repository
-
 `cd Expt-HumanMemory`
-
 `pip install virtualenv` # if not already installed
-
 `virtualenv venv` # create virtual env folder in repo
-
 `source venv/bin/activate` # activate it
-
-`pip install -r requirements.txt` # install required packages
-
+`pip install psychopy` # install psychopy
 `pip install wxPython` # install wxPython
 
-Note: wxPython cannot be included in the requirements.txt because [this](https://github.com/psychopy/psychopy/issues/2418). If wxPython installation fails on Linux: see [this](https://wxpython.org/pages/downloads/index.html).
+Note: You could try to install everything with `pip install -r requirements.txt`, however it fails because of a couple of issues. 
+wxPython cannot be included in the requirements.txt because [this](https://github.com/psychopy/psychopy/issues/2418). If wxPython installation fails on Linux: see [this](https://wxpython.org/pages/downloads/index.html).
 
 
 ## Usage
