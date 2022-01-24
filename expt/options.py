@@ -59,13 +59,24 @@ class Option(ChoiceOption):
     shape: visual.ShapeStim
     stdReward: float = 1
 
+    def __str__(self):
+        return f"{self.shape.color}_{str(self.shape)}"
 
-@dataclass
+
 class BonusOption(ChoiceOption):
     """Numerical bonus choice option for 2AFC task."""
 
-    shape: visual.TextStim
-    stdReward: float = 0
+    def __init__(self, win, meanReward):
+        self.stdReward: float = 0
+        self.shape = visual.TextStim(
+            win,
+            text=str(meanReward),
+            font="Open Sans",
+            color="black",
+            height=80,
+        )
+        self.win = win
+        self.meanReward = meanReward
 
 
 class FixCross(OnScreenObject):
@@ -156,17 +167,30 @@ class OptionSet:
 
 
 def createAllOptions(win):
-    # Create 4 sets of 3 options each
 
+    # Standard choice options (shape stimuli)
+    # Create 4 sets of 3 options each
     optSet1 = OptionSet(win, setN="set1", color="red", stakes=4, freq=4)
     optSet2 = OptionSet(win, setN="set2", color="yellow", stakes=1, freq=4)
     optSet3 = OptionSet(win, setN="set3", color="blue", stakes=4, freq=1)
     optSet4 = OptionSet(win, setN="set4", color="green", stakes=1, freq=1)
 
-    optSets = optSet1, optSet2, optSet3, optSet4
+    all_shape_options = (
+        optSet1.options + optSet2.options + optSet3.options + optSet4.options
+    )
 
-    allOptions = []
-    for optSet in optSets:
-        allOptions.extend(optSet.options)
+    # Bonus choice options (as numbers shown on screen)
+    all_good_bonus_options = []
+    all_bad_bonus_options = []
+    for option in all_shape_options:
 
-    return allOptions
+        all_good_bonus_options.append(
+            BonusOption(win=win, meanReward=(option.meanReward + 2))
+        )
+        all_bad_bonus_options.append(
+            BonusOption(win=win, meanReward=(option.meanReward - 2))
+        )
+
+    all_options = all_shape_options + all_good_bonus_options + all_bad_bonus_options
+
+    return all_options
