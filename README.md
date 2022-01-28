@@ -21,7 +21,7 @@ Note: use `pip3` instead of `pip` if that is what is linked to your python3.x
 
 `source venv/bin/activate` # activate it
 
-### Linux (Ubuntu 20.04)
+### Linux
 `pip install psychopy --user`
 
 Then fetch a wxPython wheel for your platform from [here](https://extras.wxpython.org/wxPython4/extras/linux/gtk3/). After downloading the right wheel, you can then install it with something like:
