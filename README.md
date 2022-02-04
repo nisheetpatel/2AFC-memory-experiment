@@ -8,7 +8,7 @@ Two alternative forced-choice (2AFC) experiment.
 `cd Expt-HumanMemory` # change current directory to Expt-HumanMemory
 
 ### Check python and pip versions
-Check your python version with `python --version` or `python3 --version`. The instructions below have been tested for python versions 3.6, 3.7, and 3.8. Also make sure that your pip is linked to your python 3.x with `pip --version` or `pip3 --version`.
+Check your python version with `python --version` or `python3 --version`. The instructions below have been tested for python versions 3.6, 3.7, and 3.8. As of writing this, it breaks for python 3.10. Also make sure that your pip is linked to your python 3.x with `pip --version` or `pip3 --version`.
 
 Normally, you should be able to use `pip install -r requirements.txt`, but the wheels for psychopy and wxPython are not universal. Hence, most likely, this won't work in your case. Below, I have installation instructions for each OS separately.
 
