@@ -1,9 +1,6 @@
 from pathlib import Path
-from psychopy import visual, event, core
-from expt.routines import TrialRoutine
-from expt.conditions import TrialSequenceGenerator
+from psychopy import visual, event, core, moni
 from expt.options import createAllOptions
-from expt.info import define_dialog_config_window, get_info_from_config_window
 
 if __name__ == "__main__":
     # creating the experiment
