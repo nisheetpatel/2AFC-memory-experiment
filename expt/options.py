@@ -1,5 +1,7 @@
 from abc import ABC
 from dataclasses import dataclass
+from enum import Enum, auto
+from typing import List
 from psychopy import visual
 from expt.stimuli import Stimuli
 import numpy as np
@@ -194,3 +196,20 @@ def createAllOptions(win):
     all_options = all_shape_options + all_good_bonus_options + all_bad_bonus_options
 
     return all_options
+
+
+position = {
+    "left": [-200, 0],
+    "right": [200, 0],
+    "center": [0, 0],
+    "top-left": [0, 120],
+    "top-right": [400, 120],
+}
+
+
+def set_stimulus_position(
+    stimulus: OnScreenObject, position: List[int] = position["center"]
+) -> None:
+    # Sets the position of the stimulus to pre-defined left or right positions
+    stimulus.shape.setPos(position)
+    return

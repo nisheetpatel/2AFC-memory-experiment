@@ -1,6 +1,5 @@
 from dataclasses import dataclass
 import numpy as np
-import random
 
 
 @dataclass
@@ -22,7 +21,7 @@ class TrialSequenceGenerator:
         condition_distributiuon = list(
             np.append(np.repeat(np.arange(6), self.rel_freq), np.arange(6, 12), axis=0)
         )
-        random.shuffle(condition_distributiuon)
+        np.random.shuffle(condition_distributiuon)
 
         return condition_distributiuon
 
@@ -49,9 +48,9 @@ class TrialSequenceGenerator:
 
     def add_bonus_trials(self, conditions):
         # function to insert bonus trials in given sequence
-        for option in range(12):
-            ids = [i for i in range(len(conditions)) if conditions[i] == option]
-            random.shuffle(ids)
+        for option_id in range(12):
+            ids = [i for i in range(len(conditions)) if conditions[i] == option_id]
+            np.random.shuffle(ids)
             idx_plus_Delta = ids[: int(self.n_bonus_trials_per_option / 2)]
             idx_minus_Delta = ids[
                 int(self.n_bonus_trials_per_option / 2) : self.n_bonus_trials_per_option

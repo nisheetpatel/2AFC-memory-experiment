@@ -1,4 +1,6 @@
 from psychopy import core, data, gui
+import random
+import numpy as np
 
 
 def define_dialog_config_window() -> gui.Dlg:
@@ -26,7 +28,7 @@ def define_dialog_config_window() -> gui.Dlg:
     return dialog
 
 
-def get_info_from_config_window(dialog_window) -> dict:
+def get_info_from_config_window(dialog_window, set_seeds=True) -> dict:
     """
     Extracts information input by user into the gui into a dictionary.
     """
@@ -38,5 +40,11 @@ def get_info_from_config_window(dialog_window) -> dict:
 
     # add date to info
     experiment_info["dateStr"] = data.getDateStr()
+
+    # set seeds for experiment subject and session
+    if set_seeds:
+        random.seed(int(experiment_info["Subject ID"]))
+        testing_seed = 100 * int(experiment_info["Session type"] == "testing")
+        np.random.seed(int(experiment_info["Session ID"]) + testing_seed)
 
     return experiment_info

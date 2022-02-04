@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 from expt.options import FixCross, FeedbackRect, FeedbackText
 from psychopy import visual, core, event
-import random
 
 
 @dataclass
@@ -26,7 +25,6 @@ class TrialRoutine:
         self.choiceOpt1 = self.allOptions[self.condition["option_a"]]
         self.choiceOpt2 = self.allOptions[self.condition["option_b"]]
         self.choiceOptions = [self.choiceOpt1, self.choiceOpt2]
-        random.shuffle(self.choiceOptions)
 
         # set position
         self.choiceOptions[0].setPosition(newPos="left")
