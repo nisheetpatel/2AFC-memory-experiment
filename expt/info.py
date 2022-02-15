@@ -1,41 +1,40 @@
+from pathlib import Path
 from psychopy import core, data, gui
 import random
 import numpy as np
 
 
-def define_dialog_config_window() -> gui.Dlg:
+def display_config_window() -> gui.Dlg:
     """
     Shows GUI to user to input subject and session related information.
     """
+    # define fields to show in gui
     dialog = gui.Dlg(title="Memory Experiment")
     dialog.addText("Subject Settings")
     dialog.addField("Subject ID")
     dialog.addText("Session Settings")
     dialog.addField("Session ID")
     dialog.addField("Session Type", choices=["practice", "training", "testing"])
-    dialog.addField(
-        "Instruction set", choices=["first session", "this ain't yo mama's first rodeo"]
-    )
 
-    ok_data = dialog.show()  # show dialog and wait for OK or Cancel
+    # show dialog and wait for OK or Cancel
+    dialog_window_data = dialog.show()
 
-    if dialog.OK:  # or if ok_data is not None
-        print(ok_data)
-    else:
+    # shut down if user hit cancel
+    if not dialog.OK:
         print("\nUser cancelled!\n")
         core.quit()
 
-    return dialog
+    return dialog_window_data
 
 
-def get_info_from_config_window(dialog_window, set_seeds=True) -> dict:
+def get_config_info(dialog_window, set_seeds=True) -> dict:
     """
     Extracts information input by user into the gui into a dictionary.
     """
     experiment_info = {
-        "Subject ID": dialog_window.data[0],
-        "Session ID": dialog_window.data[1],
-        "Session type": dialog_window.data[2],
+        "Subject ID": dialog_window[0],
+        "Session ID": dialog_window[1],
+        "Session type": dialog_window[2],
     }
 
     # add date to info
@@ -48,3 +47,9 @@ def get_info_from_config_window(dialog_window, set_seeds=True) -> dict:
         np.random.seed(int(experiment_info["Session ID"]) + testing_seed)
 
     return experiment_info
+
+
+def set_file_path(experiment_info: dict) -> None:
+    Path("./data").mkdir(parents=True, exist_ok=True)
+    filename = "data/subj_{}_sess_{}_{}_{}".format(*experiment_info.values())
+    return filename

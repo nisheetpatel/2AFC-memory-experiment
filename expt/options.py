@@ -6,16 +6,6 @@ from psychopy import visual
 from expt.stimuli import Stimuli
 import numpy as np
 
-# x_positions = {
-#     "left": -200,
-#     "right": 200
-# }
-
-# y_positions = {
-#     "center": 0,
-#     "top": 120
-# }
-
 
 @dataclass
 class OnScreenObject(ABC):
@@ -168,7 +158,7 @@ class OptionSet:
             self.options.append(Option(self.win, shape=stim, meanReward=reward))
 
 
-def createAllOptions(win):
+def create_choice_options(win):
 
     # Standard choice options (shape stimuli)
     # Create 4 sets of 3 options each
@@ -177,25 +167,25 @@ def createAllOptions(win):
     optSet3 = OptionSet(win, setN="set3", color="blue", stakes=4, freq=1)
     optSet4 = OptionSet(win, setN="set4", color="green", stakes=1, freq=1)
 
-    all_shape_options = (
+    shape_options = (
         optSet1.options + optSet2.options + optSet3.options + optSet4.options
     )
 
     # Bonus choice options (as numbers shown on screen)
-    all_good_bonus_options = []
-    all_bad_bonus_options = []
-    for option in all_shape_options:
+    good_bonus_options = []
+    bad_bonus_options = []
+    for option in shape_options:
 
-        all_good_bonus_options.append(
+        good_bonus_options.append(
             BonusOption(win=win, meanReward=(option.meanReward + 2))
         )
-        all_bad_bonus_options.append(
+        bad_bonus_options.append(
             BonusOption(win=win, meanReward=(option.meanReward - 2))
         )
 
-    all_options = all_shape_options + all_good_bonus_options + all_bad_bonus_options
+    choice_options = shape_options + good_bonus_options + bad_bonus_options
 
-    return all_options
+    return choice_options
 
 
 position = {
