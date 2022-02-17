@@ -17,10 +17,9 @@ if __name__ == "__main__":
     # create all stimuli
     choice_options = create_choice_options(win)
 
-    # trial conditions
-    trial_conditions = TrialSequence(
-        session_type=experiment_info["Session type"]
-    ).generate()
+    # initialize trial conditions and routine
+    trial_conditions = TrialSequence(experiment_info["Session type"]).generate()
+    trial_routine = TrialRoutine(win=win, all_choice_options=choice_options)
 
     # trial and experiment data handlers
     trials = data.TrialHandler(trialList=trial_conditions, nReps=1, method="sequential")
@@ -30,9 +29,7 @@ if __name__ == "__main__":
     # Run sequence of trials
     for this_trial in trials:
         # run one trial
-        trial_routine = TrialRoutine(
-            condition=this_trial, win=win, choice_options=choice_options
-        )
+        trial_routine.set_condition(condition=this_trial)
         data_keys, data_values = trial_routine.run()
 
         # record data

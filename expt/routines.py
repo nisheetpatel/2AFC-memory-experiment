@@ -7,33 +7,37 @@ from psychopy import visual, core, event
 class TrialRoutine:
     """The 2AFC trial routine."""
 
-    condition: dict
+    # condition: dict
     win: visual.Window
-    choice_options: list
+    all_choice_options: list
     clock = core.Clock()
 
     def __post_init__(self):
         self.fixCross = FixCross(self.win)
         self.feedbackRect = FeedbackRect(self.win)
 
-    def _assign_choice_options(self):
+    def set_condition(self, condition: dict) -> None:
+        assert "option_a", "option_b" in condition
+        self.condition = condition
+
+    def _assign_choice_options(self) -> None:
         """
         Get the relevant choice options for the
         trial condition and set their positions.
         """
         # assign left and right stimuli
-        self.option_a = self.choice_options[self.condition["option_a"]]
-        self.option_b = self.choice_options[self.condition["option_b"]]
-        self.choice_options = [self.option_a, self.option_b]
+        self.option_a = self.all_choice_options[self.condition["option_a"]]
+        self.option_b = self.all_choice_options[self.condition["option_b"]]
+        self.trial_choices = [self.option_a, self.option_b]
 
         # set position
-        self.choice_options[0].set_position(newPos="left")
-        self.choice_options[1].set_position(newPos="right")
+        self.trial_choices[0].set_position(newPos="left")
+        self.trial_choices[1].set_position(newPos="right")
 
     def _outcome(self, response):
         """Whether the response was correct or not and reward obtained."""
         # mean rewards for both choice options
-        option_rewards = [opt.meanReward for opt in self.choice_options]
+        option_rewards = [opt.meanReward for opt in self.trial_choices]
 
         # get index of the option with higher reward
         idx_max_reward = option_rewards.index(max(option_rewards))
@@ -44,7 +48,7 @@ class TrialRoutine:
         outcome_correct = response == correct_response
 
         # outcome reward
-        outcome_reward = self.choice_options[responses.index(response)].generateReward()
+        outcome_reward = self.trial_choices[responses.index(response)].generateReward()
 
         return outcome_correct, outcome_reward
 
@@ -63,7 +67,7 @@ class TrialRoutine:
         core.wait(1)
 
         # Show choice options
-        for opt in self.choice_options:
+        for opt in self.trial_choices:
             opt.shape.draw()
         self.win.flip()
 
@@ -81,7 +85,7 @@ class TrialRoutine:
             core.quit()
 
         # show feedback with choice options
-        for opt in self.choice_options:
+        for opt in self.trial_choices:
             opt.shape.draw()
         self.feedbackRect.set_position(newPos=resp)
         self.feedbackRect.shape.draw()
@@ -96,6 +100,6 @@ class TrialRoutine:
 
         # defining quantities to return
         data_keys = ("response", "reaction_time", "correct", "reward")
-        data_values = (rt, resp, corr, rew)
+        data_values = (resp, rt, corr, rew)
 
         return data_keys, data_values
