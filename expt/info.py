@@ -42,9 +42,12 @@ def get_config_info(dialog_window, set_seeds=True) -> dict:
 
     # set seeds for experiment subject and session
     if set_seeds:
-        random.seed(int(experiment_info["Subject ID"]))
-        testing_seed = 100 * int(experiment_info["Session type"] == "testing")
-        np.random.seed(int(experiment_info["Session ID"]) + testing_seed)
+        subject_seed = int(experiment_info["Subject ID"])
+        session_seed = int(experiment_info["Session ID"]) + 10 * subject_seed
+        testing_seed = int(experiment_info["Session type"] == "testing") * 1000
+
+        random.seed(subject_seed)
+        np.random.seed(session_seed + testing_seed)
 
     return experiment_info
 

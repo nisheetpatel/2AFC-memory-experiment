@@ -11,24 +11,26 @@ class TrialSequence:
         if self.session_type == "practice":
             self.n_trials_per_session = 12
             self.rel_freq = 1
+            self.n_repeats = 1
         elif self.session_type in ["training", "testing"]:
             self.n_trials_per_session = 180
             self.rel_freq = 4
+            self.n_repeats = 6
 
     @property
-    def trial_type_distribution(self):
+    def trial_conditions(self):
         # weighted list of trial conditions
-        condition_distributiuon = list(
-            np.append(np.repeat(np.arange(6), self.rel_freq), np.arange(6, 12), axis=0)
+        conditions = list(
+            np.repeat(
+                np.append(
+                    np.repeat(np.arange(6), self.rel_freq), np.arange(6, 12), axis=0
+                ),
+                self.n_repeats,
+            )
         )
-        np.random.shuffle(condition_distributiuon)
+        np.random.shuffle(conditions)
 
-        return condition_distributiuon
-
-    @property
-    def n_repeats(self):
-        # number of times the weighted conditions are repeated
-        return int(self.n_trials_per_session / len(self.trial_type_distribution))
+        return conditions
 
     def _get_options_for_condition(self, condition):
         # define option set for each condition
@@ -72,9 +74,7 @@ class TrialSequence:
     @property
     def condition_sequence(self):
         # sequence of trial conditions
-        conditions = []
-        for _ in range(self.n_repeats):
-            conditions.extend(self.trial_type_distribution)
+        conditions = self.trial_conditions
 
         # insert bonus trials for test sessions
         if self.session_type == "testing":

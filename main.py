@@ -1,4 +1,3 @@
-from pathlib import Path
 from psychopy import visual, data
 from expt.options import create_choice_options
 from expt.routines import TrialRoutine
