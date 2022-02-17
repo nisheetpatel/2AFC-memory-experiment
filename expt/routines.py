@@ -16,7 +16,7 @@ class TrialRoutine:
         self.fixCross = FixCross(self.win)
         self.feedbackRect = FeedbackRect(self.win)
 
-    def assign_choice_options(self):
+    def _assign_choice_options(self):
         """
         Get the relevant choice options for the
         trial condition and set their positions.
@@ -27,10 +27,10 @@ class TrialRoutine:
         self.choice_options = [self.option_a, self.option_b]
 
         # set position
-        self.choice_options[0].setPosition(newPos="left")
-        self.choice_options[1].setPosition(newPos="right")
+        self.choice_options[0].set_position(newPos="left")
+        self.choice_options[1].set_position(newPos="right")
 
-    def outcome(self, response):
+    def _outcome(self, response):
         """Whether the response was correct or not and reward obtained."""
         # mean rewards for both choice options
         option_rewards = [opt.meanReward for opt in self.choice_options]
@@ -55,7 +55,7 @@ class TrialRoutine:
         response, reaction time, correct, reward
         """
         # Assign choice options for the trial
-        self.assign_choice_options()
+        self._assign_choice_options()
 
         # Show fixation cross and wait 1 second
         self.fixCross.shape.draw()
@@ -75,7 +75,7 @@ class TrialRoutine:
         rt = self.clock.getTime()
         resp = keys[0]
         if resp != "escape":
-            corr, rew = self.outcome(response=resp)
+            corr, rew = self._outcome(response=resp)
         else:
             print("\nUser terminated the experiment!\n")
             core.quit()
@@ -83,7 +83,7 @@ class TrialRoutine:
         # show feedback with choice options
         for opt in self.choice_options:
             opt.shape.draw()
-        self.feedbackRect.setPosition(newPos=resp)
+        self.feedbackRect.set_position(newPos=resp)
         self.feedbackRect.shape.draw()
         feedbackText = FeedbackText(self.win, rew, pos=resp)
         feedbackText.shape.draw()

@@ -18,7 +18,7 @@ class OnScreenObject(ABC):
     # def _set_position(self):
     #     self.shape.setPos(self.position)
 
-    def setPosition(self, newPos):
+    def set_position(self, newPos):
         # Set object position to one of left or right
         assert newPos in ["left", "right"]
 
@@ -115,9 +115,9 @@ class FeedbackText(OnScreenObject):
             alignment="center",
         )
         if pos is not None:
-            self.setPosition(newPos=pos)
+            self.set_position(newPos=pos)
 
-    def setPosition(self, newPos):
+    def set_position(self, newPos):
         # Set object position to one of left or right
         assert newPos in ["left", "right"]
 
@@ -145,7 +145,7 @@ class OptionSet:
         assert self.setN in ["set1", "set2", "set3", "set4"]
 
         stimuli = Stimuli(win=self.win, color=self.color)
-        stimSet = stimuli.getStimSet(setN=self.setN)
+        stimSet = stimuli.get_stim_set(setN=self.setN)
 
         rewards = [
             self.meanReward + self.stakes,

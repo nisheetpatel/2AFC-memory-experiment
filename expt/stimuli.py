@@ -120,7 +120,7 @@ class Stimuli:
             colorSpace=self.colorSpace,
         )
 
-    def getStimSet(self, setN):
+    def get_stim_set(self, setN):
         # generate a set of three stimulus shapes
         assert setN in ["set1", "set2", "set3", "set4"]
 
