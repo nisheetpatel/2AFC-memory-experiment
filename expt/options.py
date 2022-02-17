@@ -1,6 +1,6 @@
 from abc import ABC
 from dataclasses import dataclass
-from enum import Enum, auto
+import random
 from typing import List
 from psychopy import visual
 from expt.stimuli import Stimuli
@@ -158,18 +158,22 @@ class OptionSet:
             self.options.append(ShapeOption(self.win, shape=stim, meanReward=reward))
 
 
-def create_choice_options(win):
+def create_choice_options(win) -> List[ChoiceOption]:
 
-    # Standard choice options (shape stimuli)
+    # create shuffled lists of sets and colors
+    set_names = ["set1", "set2", "set3", "set4"]
+    random.shuffle(set_names)
+    colors = ["red", "yellow", "blue", "green"]
+    random.shuffle(colors)
+    stakes = [4, 1, 4, 1]
+    freqs = [4, 4, 1, 1]
+
     # Create 4 sets of 3 options each
-    optSet1 = OptionSet(win, setN="set1", color="red", stakes=4, freq=4)
-    optSet2 = OptionSet(win, setN="set2", color="yellow", stakes=1, freq=4)
-    optSet3 = OptionSet(win, setN="set3", color="blue", stakes=4, freq=1)
-    optSet4 = OptionSet(win, setN="set4", color="green", stakes=1, freq=1)
-
-    shape_options = (
-        optSet1.options + optSet2.options + optSet3.options + optSet4.options
-    )
+    shape_options = []
+    for setN, color, stake, freq in zip(set_names, colors, stakes, freqs):
+        shape_options += OptionSet(
+            win, setN=setN, color=color, stakes=stake, freq=freq
+        ).options
 
     # Bonus choice options (as numbers shown on screen)
     good_bonus_options = []
