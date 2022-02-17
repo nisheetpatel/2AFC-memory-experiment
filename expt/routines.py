@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from expt.options import create_choice_options, FixCross, FeedbackRect, FeedbackText
+from expt.options import FixCross, FeedbackRect, FeedbackText
 from psychopy import visual, core, event
 
 
@@ -9,10 +9,10 @@ class TrialRoutine:
 
     condition: dict
     win: visual.Window
+    choice_options: list
     clock = core.Clock()
 
     def __post_init__(self):
-        self.choice_options = create_choice_options(self.win)
         self.fixCross = FixCross(self.win)
         self.feedbackRect = FeedbackRect(self.win)
 
@@ -48,9 +48,11 @@ class TrialRoutine:
 
         return outcome_correct, outcome_reward
 
-    def run(self):
+    def run(self) -> tuple:
         """
         Run the full trial routine.
+        Returns 2 tuples containing the data keys and values:
+        response, reaction time, correct, reward
         """
         # Assign choice options for the trial
         self.assign_choice_options()
@@ -72,7 +74,11 @@ class TrialRoutine:
         keys = event.waitKeys(keyList=["left", "right", "escape"])
         rt = self.clock.getTime()
         resp = keys[0]
-        corr, rew = self.outcome(response=resp)
+        if resp != "escape":
+            corr, rew = self.outcome(response=resp)
+        else:
+            print("\nUser terminated the experiment!\n")
+            core.quit()
 
         # show feedback with choice options
         for opt in self.choice_options:
@@ -86,6 +92,10 @@ class TrialRoutine:
 
         # Inter-trial interval
         self.win.flip()
-        core.wait(1)
+        core.wait(0.5)
 
-        return rt, resp, corr, rew
+        # defining quantities to return
+        data_keys = ("response", "reaction_time", "correct", "reward")
+        data_values = (rt, resp, corr, rew)
+
+        return data_keys, data_values

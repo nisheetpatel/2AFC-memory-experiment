@@ -3,8 +3,8 @@ import numpy as np
 
 
 @dataclass
-class TrialSequenceGenerator:
-    session_type: str
+class TrialSequence:
+    session_type: str = "training"
     n_bonus_trials_per_option: int = 4
 
     def __post_init__(self):
@@ -30,7 +30,7 @@ class TrialSequenceGenerator:
         # number of times the weighted conditions are repeated
         return int(self.n_trials_per_session / len(self.trial_type_distribution))
 
-    def get_options_for_condition(self, condition):
+    def _get_options_for_condition(self, condition):
         # define option set for each condition
         if condition < 12:
             if condition % 3 == 0:
@@ -46,7 +46,7 @@ class TrialSequenceGenerator:
         np.random.shuffle(choiceSet)
         return choiceSet
 
-    def add_bonus_trials(self, conditions):
+    def _add_bonus_trials(self, conditions):
         # function to insert bonus trials in given sequence
         for option_id in range(12):
             ids = [i for i in range(len(conditions)) if conditions[i] == option_id]
@@ -78,12 +78,12 @@ class TrialSequenceGenerator:
 
         # insert bonus trials for test sessions
         if self.session_type == "testing":
-            conditions = self.add_bonus_trials(conditions)
+            conditions = self._add_bonus_trials(conditions)
 
         return conditions
 
-    def conditions_dict(self, condition):
-        choice_options = self.get_options_for_condition(condition)
+    def _conditions_dict(self, condition):
+        choice_options = self._get_options_for_condition(condition)
         condition_dict_row = {
             "Condition": condition,
             "option_a": choice_options[0],
@@ -92,5 +92,5 @@ class TrialSequenceGenerator:
         return condition_dict_row
 
     def generate(self):
-        trial_sequence = list(map(self.conditions_dict, self.condition_sequence))
+        trial_sequence = list(map(self._conditions_dict, self.condition_sequence))
         return trial_sequence

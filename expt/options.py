@@ -45,7 +45,7 @@ class ChoiceOption(OnScreenObject):
 
 
 @dataclass
-class Option(ChoiceOption):
+class ShapeOption(ChoiceOption):
     """Standard choice option for 2AFC task."""
 
     shape: visual.ShapeStim
@@ -155,7 +155,7 @@ class OptionSet:
 
         self.options = []
         for stim, reward in zip(stimSet, rewards):
-            self.options.append(Option(self.win, shape=stim, meanReward=reward))
+            self.options.append(ShapeOption(self.win, shape=stim, meanReward=reward))
 
 
 def create_choice_options(win):
