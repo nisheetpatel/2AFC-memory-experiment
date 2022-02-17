@@ -39,7 +39,7 @@ class ChoiceOption(OnScreenObject):
     meanReward: float
     stdReward: float
 
-    def generateReward(self):
+    def generate_reward(self):
         r = np.random.normal(self.meanReward, self.stdReward)
         return r
 

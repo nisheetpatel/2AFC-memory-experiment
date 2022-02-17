@@ -48,7 +48,7 @@ class TrialRoutine:
         outcome_correct = response == correct_response
 
         # outcome reward
-        outcome_reward = self.trial_choices[responses.index(response)].generateReward()
+        outcome_reward = self.trial_choices[responses.index(response)].generate_reward()
 
         return outcome_correct, outcome_reward
 
