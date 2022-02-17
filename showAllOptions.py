@@ -1,6 +1,5 @@
-from pathlib import Path
-from psychopy import visual, event, core, moni
-from expt.options import createAllOptions
+from psychopy import visual, event, core
+from expt.options import create_choice_options
 
 if __name__ == "__main__":
     # creating the experiment
@@ -8,8 +7,8 @@ if __name__ == "__main__":
     win = visual.Window([1024, 768], fullscr=False, units="pix")
 
     # create probe stimuli
-    allOptions = createAllOptions(win=win)
-    allOptions = allOptions[:12]
+    all_choice_options = create_choice_options(win=win)
+    all_choice_options = all_choice_options[:12]
 
     # defining positions of all options
     x_pos_1 = 300
@@ -31,7 +30,7 @@ if __name__ == "__main__":
     ]
 
     # drawing all the options on the window
-    for option, pos in zip(allOptions, positions):
+    for option, pos in zip(all_choice_options, positions):
         option.shape.setPos(newPos=pos)
         option.shape.draw()
     win.flip()
