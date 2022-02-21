@@ -22,6 +22,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-hexagon",
         )
 
         self.triangle = visual.Polygon(
@@ -31,6 +32,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-triangle",
         )
 
         self.diamond = visual.Polygon(
@@ -40,6 +42,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-diamond",
         )
 
         self.rectangle = visual.Polygon(
@@ -50,6 +53,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-rectangle",
         )
 
         self.oval = visual.Circle(
@@ -57,6 +61,7 @@ class Stimuli:
             radius=[self.stimSize / 4, self.stimSize / 2],
             lineColor=self.lineColor,
             fillColor=self.color,
+            name=f"{self.color}-oval",
         )
 
         self.star = visual.ShapeStim(
@@ -65,6 +70,7 @@ class Stimuli:
             size=self.stimSize,
             lineColor=self.lineColor,
             fillColor=self.color,
+            name=f"{self.color}-star",
         )
 
         self.cross = visual.ShapeStim(
@@ -74,6 +80,7 @@ class Stimuli:
             ori=45,
             lineColor=self.lineColor,
             fillColor=self.color,
+            name=f"{self.color}-cross",
         )
 
         self.pentagon = visual.Polygon(
@@ -83,6 +90,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-pentagon",
         )
 
         self.circle = visual.Circle(
@@ -91,6 +99,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-circle",
         )
 
         self.heptagon = visual.Polygon(
@@ -100,6 +109,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-heptagon",
         )
 
         self.plus = visual.ShapeStim(
@@ -108,6 +118,7 @@ class Stimuli:
             size=self.stimSize,
             lineColor=self.lineColor,
             fillColor=self.color,
+            name=f"{self.color}-plus",
         )
 
         self.pacman = visual.Pie(
@@ -118,6 +129,7 @@ class Stimuli:
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
+            name=f"{self.color}-pacman",
         )
 
     def get_stim_set(self, setN):

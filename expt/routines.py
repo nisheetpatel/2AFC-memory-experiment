@@ -103,3 +103,23 @@ class TrialRoutine:
         data_values = (resp, rt, corr, rew)
 
         return data_keys, data_values
+
+    def simulate_wo_user_input(self) -> tuple:
+        """
+        Run the full trial routine without any keyboard input.
+        Returns 2 tuples containing the data keys and values:
+        response, reaction time, correct, reward
+        """
+        # Assign choice options for the trial
+        self._assign_choice_options()
+
+        # set auto response, response time, and correct
+        rt = 0.1
+        resp = "left"
+        corr, rew = self._outcome(response=resp)
+
+        # defining quantities to return
+        data_keys = ("response", "reaction_time", "correct", "reward")
+        data_values = (resp, rt, corr, rew)
+
+        return data_keys, data_values
