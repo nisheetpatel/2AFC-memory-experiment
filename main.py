@@ -1,5 +1,5 @@
 from psychopy import visual, data
-from expt.options import create_choice_options
+from expt.options import SubjectSpecificOptions, create_choice_options
 from expt.routines import TrialRoutine
 from expt.conditions import TrialSequence
 from expt.info import display_config_window, get_config_info, set_file_path
@@ -14,11 +14,14 @@ if __name__ == "__main__":
     win = visual.Window([1024, 768], fullscr=False, units="pix")
 
     # create all stimuli
-    choice_options = create_choice_options(win)
+    choice_options = SubjectSpecificOptions(win=win)
 
     # initialize trial conditions and routine
-    trial_conditions = TrialSequence(experiment_info["Session type"]).generate()
-    trial_routine = TrialRoutine(win=win, all_choice_options=choice_options)
+    trial_conditions = TrialSequence(
+        session_type=experiment_info["Session type"],
+        session_id=experiment_info["Session ID"],
+    ).generate()
+    trial_routine = TrialRoutine(win=win, all_choice_options=choice_options.all_options)
 
     # trial and experiment data handlers
     trials = data.TrialHandler(trialList=trial_conditions, nReps=1, method="sequential")
@@ -29,11 +32,18 @@ if __name__ == "__main__":
     for this_trial in trials:
         # run one trial
         trial_routine.set_condition(condition=this_trial)
-        data_keys, data_values = trial_routine.run()
+        trial_data = trial_routine.run()
 
         # record data
-        for data_key, data_value in zip(data_keys, data_values):
+        for data_key, data_value in trial_data.items():
             trials.addData(data_key, data_value)
+
+        # adaptive testing
+        if (experiment_info["Session type"] == "testing") & (
+            experiment_info["Session ID"] == "0"
+        ):
+            if trial_data["bonus_trial"]:
+                choice_options.adapt_delta(correct=trial_data["correct"])
 
         # indicate end of trial to experiment handler
         this_exp.nextEntry()

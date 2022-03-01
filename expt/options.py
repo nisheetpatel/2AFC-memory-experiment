@@ -62,7 +62,7 @@ class BonusOption(ChoiceOption):
         self.stdReward: float = 0
         self.shape = visual.TextStim(
             win,
-            text=str(meanReward),
+            text=str(np.around(meanReward, 1)),
             font="Open Sans",
             color="black",
             height=80,
@@ -109,7 +109,7 @@ class FeedbackText(OnScreenObject):
         self.rewardObtained = rewardObtained
         self.shape = visual.TextBox2(
             win=self.win,
-            text=f"$ {np.around(self.rewardObtained,2)}",
+            text=f"$ {np.around(self.rewardObtained,1)}",
             font="Open Sans",
             color="black",
             alignment="center",
@@ -130,7 +130,7 @@ class FeedbackText(OnScreenObject):
 @dataclass
 class OptionSet:
     """
-    Defines a set of 3 options with specific stakes,
+    A set of 3 options with specific stakes,
     relative frequency of occurance, and color.
     """
 
@@ -190,6 +190,92 @@ def create_choice_options(win) -> List[ChoiceOption]:
     choice_options = shape_options + good_bonus_options + bad_bonus_options
 
     return choice_options
+
+
+@dataclass
+class SubjectSpecificOptions:
+    """
+    Regular shape-based and bonus choice options for a given subject.
+    """
+
+    win: visual.Window
+    delta_pmt: float = 4
+    set_names = ["set1", "set2", "set3", "set4"]
+    colors = ["red", "yellow", "blue", "green"]
+    stakes = [4, 1, 4, 1]
+    freqs = [4, 4, 1, 1]
+
+    # parameters for adaptive setting of delta_pmt
+    a = 0.16
+    b = 0.84
+    decay = 1
+    counter = 0
+    n_adaptive_trials = 20
+
+    def __post_init__(self):
+        """Creates all shape-based options and bonus options"""
+        # shuffle the sets and colors
+        random.shuffle(self.set_names)
+        random.shuffle(self.colors)
+
+        # Create 4 sets of 3 options each
+        self.shape_options = []
+        for setN, color, stake, freq in zip(
+            self.set_names, self.colors, self.stakes, self.freqs
+        ):
+            self.shape_options += OptionSet(
+                self.win, setN=setN, color=color, stakes=stake, freq=freq
+            ).options
+
+        # Bonus choice options (as numbers shown on screen)
+        self.good_bonus_options = []
+        self.bad_bonus_options = []
+        for option in self.shape_options:
+
+            self.good_bonus_options.append(
+                BonusOption(
+                    win=self.win, meanReward=(option.meanReward + self.delta_pmt)
+                )
+            )
+            self.bad_bonus_options.append(
+                BonusOption(
+                    win=self.win, meanReward=(option.meanReward - self.delta_pmt)
+                )
+            )
+
+        self.all_options = (
+            self.shape_options + self.good_bonus_options + self.bad_bonus_options
+        )
+        return
+
+    def update_bonus_options(self, change_in_delta) -> None:
+        for option in self.good_bonus_options:
+            option.meanReward += change_in_delta
+            option.shape.text = str(np.around(option.meanReward, 1))
+
+        for option in self.bad_bonus_options:
+            option.meanReward -= change_in_delta
+            option.shape.text = str(np.around(option.meanReward, 1))
+        return
+
+    def adapt_delta(self, correct) -> None:
+        self.counter += 1
+
+        # decay for second half of adaptive trials
+        if self.counter > self.n_adaptive_trials / 2:
+            self.decay = max(2 * (1 - self.counter / self.n_adaptive_trials), 0)
+
+        # continuous adaptive setting
+        if correct:
+            change_in_delta = -self.a * self.decay
+        else:
+            change_in_delta = self.b * self.decay
+
+        # reset mean reward of bonus options and the delta_pmt attribute
+        # in class based on new value of delta_pmt
+        self.delta_pmt += change_in_delta
+        self.update_bonus_options(change_in_delta)
+        return
 
 
 position = {

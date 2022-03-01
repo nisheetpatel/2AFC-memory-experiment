@@ -4,18 +4,23 @@ import numpy as np
 
 @dataclass
 class TrialSequence:
-    session_type: str = "training"
+    session_type: str
+    session_id: int
     n_bonus_trials_per_option: int = 4
+    n_trials_per_session = 180
+    rel_freq = 4
+    n_repeats = 6
 
     def __post_init__(self):
         if self.session_type == "practice":
             self.n_trials_per_session = 12
             self.rel_freq = 1
             self.n_repeats = 1
-        elif self.session_type in ["training", "testing"]:
-            self.n_trials_per_session = 180
+        elif (self.session_type == "testing") & (self.session_id == 0):
+            self.n_bonus_trials_per_option = 2
+            self.n_trials_per_session = 90
             self.rel_freq = 4
-            self.n_repeats = 6
+            self.n_repeats = 3
 
     @property
     def trial_conditions(self):

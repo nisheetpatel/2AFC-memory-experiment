@@ -16,9 +16,16 @@ class TrialRoutine:
         self.fixCross = FixCross(self.win)
         self.feedbackRect = FeedbackRect(self.win)
 
+    def _set_trial_type(self) -> None:
+        """Records whether the current trial is a bonus trial"""
+        self.bonus_trial = False
+        if self.condition["Condition"] > 11:
+            self.bonus_trial = True
+
     def set_condition(self, condition: dict) -> None:
         assert "option_a", "option_b" in condition
         self.condition = condition
+        self._set_trial_type()
 
     def _assign_choice_options(self) -> None:
         """
@@ -52,7 +59,7 @@ class TrialRoutine:
 
         return outcome_correct, outcome_reward
 
-    def run(self) -> tuple:
+    def run(self) -> dict:
         """
         Run the full trial routine.
         Returns 2 tuples containing the data keys and values:
@@ -99,12 +106,17 @@ class TrialRoutine:
         core.wait(0.5)
 
         # defining quantities to return
-        data_keys = ("response", "reaction_time", "correct", "reward")
-        data_values = (resp, rt, corr, rew)
+        trial_data = {
+            "response": resp,
+            "reaction_time": rt,
+            "correct": corr,
+            "reward": rew,
+            "bonus_trial": self.bonus_trial,
+        }
 
-        return data_keys, data_values
+        return trial_data
 
-    def simulate_wo_user_input(self) -> tuple:
+    def simulate_wo_user_input(self) -> dict:
         """
         Run the full trial routine without any keyboard input.
         Returns 2 tuples containing the data keys and values:
@@ -119,7 +131,12 @@ class TrialRoutine:
         corr, rew = self._outcome(response=resp)
 
         # defining quantities to return
-        data_keys = ("response", "reaction_time", "correct", "reward")
-        data_values = (resp, rt, corr, rew)
+        trial_data = {
+            "response": resp,
+            "reaction_time": rt,
+            "correct": corr,
+            "reward": rew,
+            "bonus_trial": self.bonus_trial,
+        }
 
-        return data_keys, data_values
+        return trial_data
