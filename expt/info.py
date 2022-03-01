@@ -52,7 +52,28 @@ def get_config_info(dialog_window, set_seeds=True) -> dict:
     return experiment_info
 
 
-def set_file_path(experiment_info: dict) -> None:
+def set_file_path(experiment_info: dict) -> str:
     Path("./data").mkdir(parents=True, exist_ok=True)
     filename = "data/subj_{}_sess_{}_{}_{}".format(*experiment_info.values())
     return filename
+
+
+def save_subject_delta_pmt(delta_pmt: float, subject_id: int) -> None:
+    Path("./data").mkdir(parents=True, exist_ok=True)
+    with open(f"./data/subj_{subject_id}.npy", "wb") as f:
+        np.save(f, delta_pmt)
+    return
+
+
+def load_subject_delta_pmt(subject_id: int) -> float:
+    try:
+        with open(f"./data/subj_{subject_id}.npy", "rb") as f:
+            delta_pmt = np.load(f)
+    except FileNotFoundError:
+        print(
+            "\nTest sessions must start with session id = 0 "
+            "to ensure adaptive testing for each subject!\n"
+        )
+        core.quit()
+
+    return delta_pmt

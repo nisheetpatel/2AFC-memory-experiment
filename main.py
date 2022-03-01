@@ -1,8 +1,14 @@
 from psychopy import visual, data
-from expt.options import SubjectSpecificOptions, create_choice_options
+from expt.options import SubjectSpecificOptions
 from expt.routines import TrialRoutine
 from expt.conditions import TrialSequence
-from expt.info import display_config_window, get_config_info, set_file_path
+from expt.info import (
+    display_config_window,
+    get_config_info,
+    load_subject_delta_pmt,
+    save_subject_delta_pmt,
+    set_file_path,
+)
 
 if __name__ == "__main__":
     # initialize info to begin session
@@ -38,12 +44,22 @@ if __name__ == "__main__":
         for data_key, data_value in trial_data.items():
             trials.addData(data_key, data_value)
 
-        # adaptive testing
-        if (experiment_info["Session type"] == "testing") & (
-            experiment_info["Session ID"] == "0"
-        ):
-            if trial_data["bonus_trial"]:
-                choice_options.adapt_delta(correct=trial_data["correct"])
+        # adaptive testing: set experimental parameter Delta_PMT adaptively
+        # for each subject based on their performance in the test session 0
+        if experiment_info["Session type"] == "testing":
+            if int(experiment_info["Session ID"]) == 0:
+                if trial_data["bonus_trial"]:
+                    delta_pmt = choice_options.adapt_delta(
+                        correct=trial_data["correct"]
+                    )
+
+                if trials.nRemaining == 0:
+                    save_subject_delta_pmt(delta_pmt, experiment_info["Subject ID"])
+
+            else:
+                if trials.thisIndex == 0:
+                    delta_pmt = load_subject_delta_pmt(experiment_info["Subject ID"])
+                    choice_options.update_bonus_options(new_delta_pmt=delta_pmt)
 
         # indicate end of trial to experiment handler
         this_exp.nextEntry()

@@ -159,7 +159,10 @@ class OptionSet:
 
 
 def create_choice_options(win) -> List[ChoiceOption]:
-
+    """
+    Function to create choice options for a subject.
+    Deprecated: does not support adaptive setting of Delta_PMT.
+    """
     # create shuffled lists of sets and colors
     set_names = ["set1", "set2", "set3", "set4"]
     random.shuffle(set_names)
@@ -248,7 +251,10 @@ class SubjectSpecificOptions:
         )
         return
 
-    def update_bonus_options(self, change_in_delta) -> None:
+    def update_bonus_options(self, change_in_delta=0, new_delta_pmt=None) -> float:
+        if (new_delta_pmt is not None) & (change_in_delta == 0):
+            change_in_delta = new_delta_pmt - self.delta_pmt
+
         for option in self.good_bonus_options:
             option.meanReward += change_in_delta
             option.shape.text = str(np.around(option.meanReward, 1))
@@ -275,7 +281,7 @@ class SubjectSpecificOptions:
         # in class based on new value of delta_pmt
         self.delta_pmt += change_in_delta
         self.update_bonus_options(change_in_delta)
-        return
+        return self.delta_pmt
 
 
 position = {
