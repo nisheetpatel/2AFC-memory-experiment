@@ -1,6 +1,5 @@
 import itertools
 import os
-from secrets import choice
 import pandas as pd
 from psychopy import visual, data
 from expt.options import create_choice_options
@@ -70,9 +69,9 @@ def simulate_experiments() -> pd.DataFrame:
         # run sequence of trials
         for this_trial in trials:
             trial_routine.set_condition(condition=this_trial)
-            data_keys, data_values = trial_routine.simulate_wo_user_input()
+            trial_data = trial_routine.simulate_wo_user_input()
 
-            for data_key, data_value in zip(data_keys, data_values):
+            for data_key, data_value in trial_data.items():
                 trials.addData(data_key, data_value)
 
             # indicate end of trial to experiment handler
@@ -101,6 +100,9 @@ def test_same_options_for_subject(df_options):
                 )
             ]
     assert all(test_len) == 1, "Options are not the same within subject!"
+
+    # manually checked whether option colors, shapes, and sets
+    # were shuffled across subjects
     return
 
 
@@ -131,4 +133,4 @@ def test_subject_session_shuffle():
 if __name__ == "__main__":
     df_options = simulate_experiments()
     test_same_options_for_subject(df_options)
-    test_subject_session_shuffle()
+    df_trial_shuffle = test_subject_session_shuffle()
