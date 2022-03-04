@@ -11,12 +11,14 @@ class Stimuli:
     color: str
     lineColor: str = "black"
     colorSpace: str = "rgb"
-    stimSize: int = 100
+    stimSize: int = 0.3
+    units: str = "height"
 
     def __post_init__(self):
         # define twelve shapes to choose from
         self.hexagon = visual.Polygon(
             win=self.win,
+            units=self.units,
             edges=6,
             size=self.stimSize,
             lineColor=self.lineColor,
@@ -27,8 +29,10 @@ class Stimuli:
 
         self.triangle = visual.Polygon(
             win=self.win,
+            units=self.units,
             edges=3,
-            size=self.stimSize,
+            ori=90,
+            size=self.stimSize * 1.1,
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
@@ -37,6 +41,7 @@ class Stimuli:
 
         self.diamond = visual.Polygon(
             win=self.win,
+            units=self.units,
             edges=4,
             size=[self.stimSize, self.stimSize / 2],
             lineColor=self.lineColor,
@@ -47,8 +52,9 @@ class Stimuli:
 
         self.rectangle = visual.Polygon(
             win=self.win,
+            units=self.units,
             edges=4,
-            size=self.stimSize,
+            size=self.stimSize * 1.1,
             ori=-45,
             lineColor=self.lineColor,
             fillColor=self.color,
@@ -58,7 +64,8 @@ class Stimuli:
 
         self.oval = visual.Circle(
             win=self.win,
-            radius=[self.stimSize / 4, self.stimSize / 2],
+            units=self.units,
+            radius=[self.stimSize / 4.1, self.stimSize / 2.1],
             lineColor=self.lineColor,
             fillColor=self.color,
             name=f"{self.color}-oval",
@@ -66,6 +73,7 @@ class Stimuli:
 
         self.star = visual.ShapeStim(
             win=self.win,
+            units=self.units,
             vertices="star7",
             size=self.stimSize,
             lineColor=self.lineColor,
@@ -75,6 +83,7 @@ class Stimuli:
 
         self.cross = visual.ShapeStim(
             win=self.win,
+            units=self.units,
             vertices="cross",
             size=self.stimSize,
             ori=45,
@@ -85,8 +94,9 @@ class Stimuli:
 
         self.pentagon = visual.Polygon(
             win=self.win,
+            units=self.units,
             edges=5,
-            size=self.stimSize,
+            size=self.stimSize * 1.05,
             lineColor=self.lineColor,
             fillColor=self.color,
             colorSpace=self.colorSpace,
@@ -95,6 +105,7 @@ class Stimuli:
 
         self.circle = visual.Circle(
             win=self.win,
+            units=self.units,
             size=self.stimSize,
             lineColor=self.lineColor,
             fillColor=self.color,
@@ -103,7 +114,8 @@ class Stimuli:
         )
 
         self.heptagon = visual.Polygon(
-            self.win,
+            win=self.win,
+            units=self.units,
             edges=7,
             size=self.stimSize,
             lineColor=self.lineColor,
@@ -113,7 +125,8 @@ class Stimuli:
         )
 
         self.plus = visual.ShapeStim(
-            self.win,
+            win=self.win,
+            units=self.units,
             vertices="cross",
             size=self.stimSize,
             lineColor=self.lineColor,
@@ -123,6 +136,7 @@ class Stimuli:
 
         self.pacman = visual.Pie(
             win=self.win,
+            units=self.units,
             size=self.stimSize,
             start=60,
             end=-240,

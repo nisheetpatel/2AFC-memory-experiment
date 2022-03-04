@@ -23,9 +23,9 @@ class OnScreenObject(ABC):
         assert newPos in ["left", "right"]
 
         if newPos == "left":
-            self.shape.setPos([-200, 0])
+            self.shape.setPos([-0.35, 0])
         elif newPos == "right":
-            self.shape.setPos([200, 0])
+            self.shape.setPos([0.35, 0])
 
     def _get_position(self):
         # Fetch object position
@@ -62,10 +62,11 @@ class BonusOption(ChoiceOption):
         self.stdReward: float = 0
         self.shape = visual.TextStim(
             win,
+            units="height",
             text=str(np.around(meanReward, 1)),
             font="Open Sans",
             color="black",
-            height=80,
+            height=0.15,
         )
         self.win = win
         self.meanReward = meanReward
@@ -78,7 +79,8 @@ class FixCross(OnScreenObject):
         self.win = win
         self.shape = visual.ShapeStim(
             win=self.win,
-            size=10,
+            units="height",
+            size=0.1,
             vertices="cross",
             lineColor="white",
             fillColor="white",
@@ -92,9 +94,10 @@ class FeedbackRect(OnScreenObject):
         self.win = win
         self.shape = visual.Polygon(
             win=self.win,
+            units="height",
             edges=4,
             ori=45,
-            size=250,
+            size=0.5,
             lineColor="black",
             fillColor=None,
             colorSpace="rgb",
@@ -109,10 +112,12 @@ class FeedbackText(OnScreenObject):
         self.rewardObtained = rewardObtained
         self.shape = visual.TextBox2(
             win=self.win,
+            units="height",
+            letterHeight=0.05,
             text=f"$ {np.around(self.rewardObtained,1)}",
             font="Open Sans",
             color="black",
-            alignment="center",
+            # alignment="center",
         )
         if pos is not None:
             self.set_position(newPos=pos)
@@ -122,9 +127,9 @@ class FeedbackText(OnScreenObject):
         assert newPos in ["left", "right"]
 
         if newPos == "left":
-            self.shape.setPos([0, 120])
+            self.shape.setPos([0.05, 0.2])
         elif newPos == "right":
-            self.shape.setPos([400, 120])
+            self.shape.setPos([0.75, 0.2])
 
 
 @dataclass

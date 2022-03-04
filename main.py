@@ -17,7 +17,7 @@ if __name__ == "__main__":
     file_path = set_file_path(experiment_info)
 
     # create window for experiment
-    win = visual.Window([1024, 768], fullscr=False, units="pix")
+    win = visual.Window([1920, 1080], fullscr=False, units="pix")
 
     # create all stimuli
     choice_options = SubjectSpecificOptions(win=win)
