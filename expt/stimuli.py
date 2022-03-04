@@ -9,7 +9,6 @@ class Stimuli:
 
     win: visual.Window
     color: str
-    lineColor: str = "black"
     colorSpace: str = "rgb"
     stimSize: int = 0.3
     units: str = "height"
@@ -21,7 +20,7 @@ class Stimuli:
             units=self.units,
             edges=6,
             size=self.stimSize,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-hexagon",
@@ -33,7 +32,7 @@ class Stimuli:
             edges=3,
             ori=90,
             size=self.stimSize * 1.1,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-triangle",
@@ -44,7 +43,7 @@ class Stimuli:
             units=self.units,
             edges=4,
             size=[self.stimSize, self.stimSize / 2],
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-diamond",
@@ -56,7 +55,7 @@ class Stimuli:
             edges=4,
             size=self.stimSize * 1.1,
             ori=-45,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-rectangle",
@@ -66,7 +65,7 @@ class Stimuli:
             win=self.win,
             units=self.units,
             radius=[self.stimSize / 4.1, self.stimSize / 2.1],
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             name=f"{self.color}-oval",
         )
@@ -76,7 +75,7 @@ class Stimuli:
             units=self.units,
             vertices="star7",
             size=self.stimSize,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             name=f"{self.color}-star",
         )
@@ -87,7 +86,7 @@ class Stimuli:
             vertices="cross",
             size=self.stimSize,
             ori=45,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             name=f"{self.color}-cross",
         )
@@ -97,7 +96,7 @@ class Stimuli:
             units=self.units,
             edges=5,
             size=self.stimSize * 1.05,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-pentagon",
@@ -107,7 +106,7 @@ class Stimuli:
             win=self.win,
             units=self.units,
             size=self.stimSize,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-circle",
@@ -118,7 +117,7 @@ class Stimuli:
             units=self.units,
             edges=7,
             size=self.stimSize,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-heptagon",
@@ -129,7 +128,7 @@ class Stimuli:
             units=self.units,
             vertices="cross",
             size=self.stimSize,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             name=f"{self.color}-plus",
         )
@@ -140,7 +139,7 @@ class Stimuli:
             size=self.stimSize,
             start=60,
             end=-240,
-            lineColor=self.lineColor,
+            lineColor=self.color,
             fillColor=self.color,
             colorSpace=self.colorSpace,
             name=f"{self.color}-pacman",

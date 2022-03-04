@@ -4,6 +4,30 @@ from psychopy import visual, core, event
 
 
 @dataclass
+class InitialScreen:
+    """Welcome screen before starting the experiment."""
+
+    # condition: dict
+    win: visual.Window
+
+    def show(self):
+        # display instructions and wait
+        message1 = visual.TextStim(
+            self.win,
+            text="Press any key when ready",
+            height=0.075,
+            units="height",
+            wrapWidth=1.25,
+        )
+        message1.draw()
+        self.win.flip()  # to show our newly drawn 'stimuli'
+
+        # pause until there's a keypress
+        _ = event.waitKeys()
+        self.win.flip()
+
+
+@dataclass
 class TrialRoutine:
     """The 2AFC trial routine."""
 

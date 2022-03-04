@@ -1,6 +1,6 @@
 from psychopy import visual, data
 from expt.options import SubjectSpecificOptions
-from expt.routines import TrialRoutine
+from expt.routines import InitialScreen, TrialRoutine
 from expt.conditions import TrialSequence
 from expt.info import (
     display_config_window,
@@ -17,7 +17,7 @@ if __name__ == "__main__":
     file_path = set_file_path(experiment_info)
 
     # create window for experiment
-    win = visual.Window([1920, 1080], fullscr=False, units="pix")
+    win = visual.Window([1920, 1080], fullscr=True, units="pix", color=(-1, -1, -1))
 
     # create all stimuli
     choice_options = SubjectSpecificOptions(win=win)
@@ -28,11 +28,15 @@ if __name__ == "__main__":
         session_id=experiment_info["Session ID"],
     ).generate()
     trial_routine = TrialRoutine(win=win, all_choice_options=choice_options.all_options)
+    initial_screen = InitialScreen(win=win)
 
     # trial and experiment data handlers
     trials = data.TrialHandler(trialList=trial_conditions, nReps=1, method="sequential")
     this_exp = data.ExperimentHandler(extraInfo=experiment_info, dataFileName=file_path)
     this_exp.addLoop(trials)
+
+    # initial screen
+    initial_screen.show()
 
     # Run sequence of trials
     for this_trial in trials:

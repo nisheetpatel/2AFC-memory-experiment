@@ -13,10 +13,6 @@ class OnScreenObject(ABC):
 
     win: visual.Window
     shape: visual
-    # position: List[int, int]
-
-    # def _set_position(self):
-    #     self.shape.setPos(self.position)
 
     def set_position(self, newPos):
         # Set object position to one of left or right
@@ -98,7 +94,7 @@ class FeedbackRect(OnScreenObject):
             edges=4,
             ori=45,
             size=0.5,
-            lineColor="black",
+            lineColor="white",
             fillColor=None,
             colorSpace="rgb",
         )
@@ -116,7 +112,7 @@ class FeedbackText(OnScreenObject):
             letterHeight=0.05,
             text=f"$ {np.around(self.rewardObtained,1)}",
             font="Open Sans",
-            color="black",
+            color="white",
             # alignment="center",
         )
         if pos is not None:
@@ -149,7 +145,7 @@ class OptionSet:
     def __post_init__(self):
         assert self.setN in ["set1", "set2", "set3", "set4"]
 
-        stimuli = Stimuli(win=self.win, color=self.color)
+        stimuli = Stimuli(win=self.win, color=self.color, colorSpace="rgb")
         stimSet = stimuli.get_stim_set(setN=self.setN)
 
         rewards = [
@@ -171,7 +167,8 @@ def create_choice_options(win) -> List[ChoiceOption]:
     # create shuffled lists of sets and colors
     set_names = ["set1", "set2", "set3", "set4"]
     random.shuffle(set_names)
-    colors = ["red", "yellow", "blue", "green"]
+    # colors = ["red", "yellow", "blue", "green"]
+    colors = [(0.4, 0.4, 0.4), (0.8, 0.25, -1), (-0.33, 0.41, 0.83), (-1, 0.24, -0.1)]
     random.shuffle(colors)
     stakes = [4, 1, 4, 1]
     freqs = [4, 4, 1, 1]
@@ -209,7 +206,7 @@ class SubjectSpecificOptions:
     win: visual.Window
     delta_pmt: float = 4
     set_names = ["set1", "set2", "set3", "set4"]
-    colors = ["red", "yellow", "blue", "green"]
+    colors = [(0.4, 0.4, 0.4), (0.8, 0.25, -1), (-0.33, 0.41, 0.83), (-1, 0.24, -0.1)]
     stakes = [4, 1, 4, 1]
     freqs = [4, 4, 1, 1]
 
@@ -287,20 +284,3 @@ class SubjectSpecificOptions:
         self.delta_pmt += change_in_delta
         self.update_bonus_options(change_in_delta)
         return self.delta_pmt
-
-
-position = {
-    "left": [-200, 0],
-    "right": [200, 0],
-    "center": [0, 0],
-    "top-left": [0, 120],
-    "top-right": [400, 120],
-}
-
-
-def set_stimulus_position(
-    stimulus: OnScreenObject, position: List[int] = position["center"]
-) -> None:
-    # Sets the position of the stimulus to pre-defined left or right positions
-    stimulus.shape.setPos(position)
-    return
