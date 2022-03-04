@@ -61,7 +61,7 @@ class BonusOption(ChoiceOption):
             units="height",
             text=str(np.around(meanReward, 1)),
             font="Open Sans",
-            color="black",
+            color="white",
             height=0.15,
         )
         self.win = win
@@ -113,7 +113,6 @@ class FeedbackText(OnScreenObject):
             text=f"$ {np.around(self.rewardObtained,1)}",
             font="Open Sans",
             color="white",
-            # alignment="center",
         )
         if pos is not None:
             self.set_position(newPos=pos)
