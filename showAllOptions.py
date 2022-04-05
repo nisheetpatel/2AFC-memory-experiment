@@ -4,7 +4,7 @@ from expt.options import create_choice_options
 if __name__ == "__main__":
     # creating the experiment
     # create window
-    win = visual.Window([1920, 1080], fullscr=False, units="pix", color=(-1, -1, -1))
+    win = visual.Window([1920, 1080], fullscr=True, units="pix", color=(-1, -1, -1))
 
     # create probe stimuli
     all_choice_options = create_choice_options(win=win)
