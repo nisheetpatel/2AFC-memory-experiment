@@ -127,6 +127,25 @@ class FeedbackText(OnScreenObject):
             self.shape.setPos([0.75, 0.2])
 
 
+class RespondFasterText(OnScreenObject):
+    """Text asking subjects to respond faster!"""
+
+    def __init__(self, win):
+        self.win = win
+        self.shape = visual.TextBox2(
+            win=self.win,
+            units="height",
+            letterHeight=0.06,
+            text="Make your choice faster",
+            font="Open Sans",
+            color="white",
+        )
+        self.set_position()
+
+    def set_position(self):
+        self.shape.setPos([0, 0.35])
+
+
 @dataclass
 class OptionSet:
     """
