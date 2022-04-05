@@ -41,9 +41,9 @@ Then fetch a wxPython wheel for your platform from [here](https://extras.wxpytho
 `pip install psychtoolbox`
 
 ### Windows
-??
+Will upload full instructions soon, but I recommend following psychopy's installation instructions (link below). You may encounter issues with pip + virtualenv, in which case, I recommend using Anaconda (or try that to begin with). 
 
-**Note**: If you still have issues with installation, please refer to the [official installation webpage](https://www.psychopy.org/download.html) for psychopy or contact me directly.
+**Note**: If you still have issues with installation, please refer to the [official installation webpage](https://www.psychopy.org/) for psychopy or contact me directly.
 
 ## Usage
 `python main.py` will open up a window and gui with the experiment. Select options on each trial with left or right arrow keys. Hit 'escape' when options appear to exit the window.
