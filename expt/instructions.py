@@ -60,17 +60,18 @@ class TotalEarningsScreen:
 
         # session payoffs
         for idx, payoff in enumerate(self.payoff_list):
-            text_stims += [visual.TextStim(text=f"Session {idx+1}", pos=(-0.2, y[idx]), **kwargs)]
+            text_stims += [visual.TextStim(text=f"Selected trial {idx+1}", pos=(-0.2, y[idx]), **kwargs)]
             text_stims += [visual.TextStim(text=f"${round(payoff, ndigits=1)}", pos=(0.2, y[idx]), **kwargs)]
 
         # totals
         total = round(25 + sum(self.payoff_list), 1)
-        text_stims += [visual.TextStim(text=f"Total", pos=(-0.2, -0.18), **kwargs)]
-        text_stims += [visual.TextStim(text=f"${total}", pos=(0.2, -0.18), **kwargs)]
+        kwargs["height"] = 0.04
+        text_stims += [visual.TextStim(text=f"Total", pos=(-0.2, -0.06), **kwargs)]
+        text_stims += [visual.TextStim(text=f"${total}", pos=(0.2, -0.06), **kwargs)]
         
         text_stims += [visual.TextStim(text="Press space to end experiment", pos=(0, -0.3), **kwargs)]
 
-        text_stims += [visual.Line(win=self.win, start=(0.3, -0.15), end=(-0.3, -0.15), lineWidth=0.03, color="white", units="height")]
+        text_stims += [visual.Line(win=self.win, start=(0.3, -0.03), end=(-0.3, -0.03), lineWidth=0.05, color="beige", units="height")]
 
         return text_stims
 

@@ -1,4 +1,4 @@
-from typing import Optional
+import random
 import numpy as np
 from dataclasses import dataclass
 from expt.conditions import TrialSequence
@@ -163,6 +163,8 @@ class SessionRoutine:
     session_type: str = None
 
     def __post_init__(self):
+        self.session_payoff = []
+
         # screens to display at the beginning and end of sesions
         self.initial_screen = BeginSessionScreen(self.win)
         if not self.final_session:
@@ -194,7 +196,7 @@ class SessionRoutine:
         """Setup handlers for data collection."""
         self.trials = data.TrialHandler(trialList=self.trial_conditions, nReps=1, method="sequential")
         self.data_handler.addLoop(self.trials)
-        self.payoff_trial_index = np.random.choice(self.trials.nTotal)
+        self.payoff_trial_index = np.random.choice(self.trials.nTotal, size=2, replace=False)
 
     def run_trial_sequence(self):
         """Run sequence of trials for the session."""
@@ -208,8 +210,8 @@ class SessionRoutine:
                 self.trials.addData(data_key, data_value)
 
             # record payoff for randomly set payoff trial
-            if self.trials.thisIndex == self.payoff_trial_index:
-                self.session_payoff = trial_data["reward"]
+            if self.trials.thisIndex in self.payoff_trial_index:
+                self.session_payoff += [trial_data["reward"]]
 
             # indicate end of trial to data handler
             self.data_handler.nextEntry()
@@ -263,8 +265,8 @@ class AdaptiveTestingSession(SessionRoutine):
                 )
 
             # record payoff for randomly set payoff trial
-            if self.trials.thisIndex == self.payoff_trial_index:
-                self.session_payoff = trial_data["reward"]
+            if self.trials.thisIndex in self.payoff_trial_index:
+                self.session_payoff += [trial_data["reward"]]
 
             # indicate end of trial to data handler
             self.data_handler.nextEntry()
@@ -324,11 +326,12 @@ class DayRoutine:
         payoff_list = []
         for session_routine in self.session_routines:
             session_payoff = session_routine.run()
-            payoff_list += [session_payoff]
+            if session_routine.session_type == "testing":
+                payoff_list += session_payoff
 
-        # ignore first practice session on day 2
-        if self.day == 2:
-            payoff_list = payoff_list[1:]
+        # pick five trials at random 
+        random.shuffle(payoff_list)
+        payoff_list = payoff_list[:5]
         
         # display total earnings at the end of the day
         total_earnings_screen = TotalEarningsScreen(win=self.win, payoff_list=payoff_list)

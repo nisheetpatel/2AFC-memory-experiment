@@ -109,7 +109,7 @@ class FeedbackText(OnScreenObject):
         self.shape = visual.TextBox2(
             win=self.win,
             units="height",
-            letterHeight=0.05,
+            letterHeight=0.09,
             text=f"$ {np.around(self.rewardObtained,1)}",
             font="Open Sans",
             color="white",
@@ -122,9 +122,9 @@ class FeedbackText(OnScreenObject):
         assert newPos in ["left", "right"]
 
         if newPos == "left":
-            self.shape.setPos([0.05, 0.2])
+            self.shape.setPos([0.05, 0.25])
         elif newPos == "right":
-            self.shape.setPos([0.75, 0.2])
+            self.shape.setPos([0.75, 0.25])
 
 
 class RespondFasterText(OnScreenObject):
@@ -135,7 +135,7 @@ class RespondFasterText(OnScreenObject):
         self.shape = visual.TextBox2(
             win=self.win,
             units="height",
-            letterHeight=0.06,
+            letterHeight=0.075,
             text="Make your choice faster",
             font="Open Sans",
             color="white",
